@@ -43,6 +43,10 @@ export class MovieService {
     const movie = {
       id: this.idCounter++,
       ...createMovieDto,
+      // 임시코드
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      version: 1,
     };
 
     this.movies.push(movie);
