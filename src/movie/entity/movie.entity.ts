@@ -2,11 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BaseTable } from './base-table.entity';
+import { Director } from 'src/director/entity/director.entity';
+import { BaseTable } from '../../common/entity/base-table.entity';
 import { MovieDetail } from './movie-detail.entiy';
 
 @Entity()
@@ -23,4 +25,7 @@ export class Movie extends BaseTable {
   @OneToOne(() => MovieDetail)
   @JoinColumn()
   detail: MovieDetail;
+
+  @ManyToOne(() => Director, (director) => director.id)
+  director: Director;
 }
