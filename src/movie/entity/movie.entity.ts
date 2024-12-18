@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -31,6 +32,7 @@ export class Movie extends BaseTable {
     cascade: true,
     nullable: false,
   })
+  @JoinColumn()
   detail: MovieDetail;
 
   @ManyToOne(() => Director, (director) => director.id, {
