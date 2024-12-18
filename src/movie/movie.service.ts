@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 
 import { Director } from 'src/director/entity/director.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieDetail } from './entity/movie-detail.entiy';
 import { Movie } from './entity/movie.entity';
+import { Genre } from 'src/genre/entities/genre.entity';
 
 @Injectable()
 export class MovieService {
@@ -19,6 +20,9 @@ export class MovieService {
 
     @InjectRepository(Director)
     private readonly directorRepository: Repository<Director>,
+
+    @InjectRepository(Genre)
+    private readonly genreRepository: Repository<Genre>,
   ) {}
 
   findAll(title?: string) {
@@ -56,12 +60,23 @@ export class MovieService {
       throw new NotFoundException('존재하지 않는 id의 감독입니다.');
     }
 
+    const genres = await this.genreRepository.find({
+      where: {
+        id: In(createMovieDto.genreIds),
+      },
+    });
+
+    if (genres.length !== createMovieDto.genreIds.length) {
+      throw new NotFoundException('존재하지 않는 id의 장르입니다.');
+    }
+
     const movie = await this.movieRepository.save({
-      ...createMovieDto,
+      title: createMovieDto.title,
       detail: {
         detail: createMovieDto.detail,
       },
       director,
+      genres,
     });
 
     return movie;
