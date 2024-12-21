@@ -5,11 +5,13 @@ import * as Joi from 'joi';
 
 import { DirectorModule } from './director/director.module';
 import { Director } from './director/entity/director.entity';
+import { Genre } from './genre/entities/genre.entity';
+import { GenreModule } from './genre/genre.module';
 import { MovieDetail } from './movie/entity/movie-detail.entiy';
 import { Movie } from './movie/entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
-import { GenreModule } from './genre/genre.module';
-import { Genre } from './genre/entities/genre.entity';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { Genre } from './genre/entities/genre.entity';
     DirectorModule,
     GenreModule,
     GenreModule,
+    AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}
