@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -14,6 +15,7 @@ import {
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieService } from './movie.service';
+import { MovieTitleValidationPipe } from './pipe/movie-title-validation.pipe';
 
 @Controller('movie')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -21,13 +23,13 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  getMovies(@Query('title') title?: string) {
+  getMovies(@Query('title', MovieTitleValidationPipe) title?: string) {
     return this.movieService.findAll(title);
   }
 
   @Get(':id')
-  getMovie(@Param('id') id: string) {
-    return this.movieService.findOne(+id);
+  getMovie(@Param('id', ParseIntPipe) id: number) {
+    return this.movieService.findOne(id);
   }
 
   @Post()
@@ -36,12 +38,15 @@ export class MovieController {
   }
 
   @Patch(':id')
-  patchMovie(@Param('id') id: string, @Body() body: UpdateMovieDto) {
-    return this.movieService.update(+id, body);
+  patchMovie(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateMovieDto,
+  ) {
+    return this.movieService.update(id, body);
   }
 
   @Delete(':id')
-  deleteMovie(@Param('id') id: string) {
-    return this.movieService.remove(+id);
+  deleteMovie(@Param('id', ParseIntPipe) id: number) {
+    return this.movieService.remove(id);
   }
 }
