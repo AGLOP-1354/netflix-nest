@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 
+import { AuthModule } from './auth/auth.module';
 import { DirectorModule } from './director/director.module';
 import { Director } from './director/entity/director.entity';
 import { Genre } from './genre/entities/genre.entity';
@@ -10,7 +11,7 @@ import { GenreModule } from './genre/genre.module';
 import { MovieDetail } from './movie/entity/movie-detail.entiy';
 import { Movie } from './movie/entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
-import { AuthModule } from './auth/auth.module';
+import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { UserModule } from './user/user.module';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        HASH_ROUNDS: Joi.number().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -35,7 +37,7 @@ import { UserModule } from './user/user.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [Movie, MovieDetail, Director, Genre],
+        entities: [Movie, MovieDetail, Director, Genre, User],
         synchronize: true,
       }),
       inject: [ConfigService],
