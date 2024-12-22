@@ -1,9 +1,15 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 
 import { AuthModule } from './auth/auth.module';
+import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
 import { envVariables } from './common/const/env.config';
 import { DirectorModule } from './director/director.module';
 import { Director } from './director/entity/director.entity';
@@ -53,4 +59,20 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(BearerTokenMiddleware)
+      .exclude(
+        {
+          path: 'auth/login',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'auth/register',
+          method: RequestMethod.POST,
+        },
+      )
+      .forRoutes('*');
+  }
+}
