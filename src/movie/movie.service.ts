@@ -35,9 +35,13 @@ export class MovieService {
       .leftJoinAndSelect('movie.director', 'director')
       .leftJoinAndSelect('movie.genres', 'genres');
 
-    this.commonService.applyCursorPaginationParmasToQb(qb, dto);
+    // this.commonService.applyCursorPaginationParmasToQb(qb, dto);
+    const { nextCursor } =
+      await this.commonService.applyCursorPaginationParmasToQb(qb, dto);
 
-    return await qb.getManyAndCount();
+    const [data, count] = await qb.getManyAndCount();
+
+    return { data, count, nextCursor };
   }
 
   async findOne(id: number) {
