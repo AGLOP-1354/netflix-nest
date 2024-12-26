@@ -10,9 +10,9 @@ import {
 } from 'typeorm';
 
 import { Director } from 'src/director/entity/director.entity';
+import { Genre } from 'src/genre/entities/genre.entity';
 import { BaseTable } from '../../common/entity/base-table.entity';
 import { MovieDetail } from './movie-detail.entiy';
-import { Genre } from 'src/genre/entities/genre.entity';
 
 @Entity()
 export class Movie extends BaseTable {
@@ -27,6 +27,11 @@ export class Movie extends BaseTable {
   @ManyToMany(() => Genre, (genre) => genre.movies)
   @JoinTable()
   genres: Genre[];
+
+  @Column({
+    default: 0,
+  })
+  likeCount: number;
 
   @OneToOne(() => MovieDetail, (movieDetail) => movieDetail.id, {
     cascade: true,
