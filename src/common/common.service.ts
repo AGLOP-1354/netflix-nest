@@ -23,7 +23,8 @@ export class CommonService {
     qb: SelectQueryBuilder<T>,
     dto: CursorPaginationDto,
   ) {
-    let { cursor, order, take } = dto;
+    let { order } = dto;
+    const { cursor, take } = dto;
 
     if (cursor) {
       const decodedCursor = Buffer.from(cursor, 'base64').toString('utf-8');
