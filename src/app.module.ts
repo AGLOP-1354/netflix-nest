@@ -8,7 +8,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
+import { join } from 'path';
 
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/guard/auth.guard';
 import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
@@ -55,6 +57,10 @@ import { UserModule } from './user/user.module';
         synchronize: true,
       }),
       inject: [ConfigService],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public'),
+      serveRoot: '/public/',
     }),
     MovieModule,
     DirectorModule,
