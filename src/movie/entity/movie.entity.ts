@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Transform } from 'class-transformer';
 import { Director } from 'src/director/entity/director.entity';
 import { Genre } from 'src/genre/entities/genre.entity';
 import { BaseTable } from '../../common/entity/base-table.entity';
@@ -41,6 +42,7 @@ export class Movie extends BaseTable {
   detail: MovieDetail;
 
   @Column()
+  @Transform(({ value }) => `http://localhost:3000/${value}`)
   movieFilePath: string;
 
   @ManyToOne(() => Director, (director) => director.id, {
