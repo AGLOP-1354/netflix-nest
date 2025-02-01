@@ -27,6 +27,7 @@ import { Movie } from './movie/entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
+import { MovieUserLike } from './movie/entity/movie-user-like.entity';
 
 @Module({
   imports: [
@@ -53,7 +54,7 @@ import { UserModule } from './user/user.module';
         username: configService.get<string>(envVariables.dbUsername),
         password: configService.get<string>(envVariables.dbPassword),
         database: configService.get<string>(envVariables.dbDatabase),
-        entities: [Movie, MovieDetail, Director, Genre, User],
+        entities: [Movie, MovieDetail, Director, Genre, User, MovieUserLike],
         synchronize: true,
       }),
       inject: [ConfigService],

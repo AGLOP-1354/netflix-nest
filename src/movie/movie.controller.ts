@@ -37,6 +37,11 @@ export class MovieController {
     return this.movieService.findAll(dto);
   }
 
+  @Get('recent')
+  getMovicesRecent() {
+    return this.movieService.findRecent();
+  }
+
   @Public()
   @Get(':id')
   getMovie(@Param('id', ParseIntPipe) id: number) {
