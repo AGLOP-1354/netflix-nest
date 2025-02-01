@@ -28,6 +28,7 @@ import { MovieModule } from './movie/movie.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { MovieUserLike } from './movie/entity/movie-user-like.entity';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -62,6 +63,10 @@ import { MovieUserLike } from './movie/entity/movie-user-like.entity';
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'public'),
       serveRoot: '/public/',
+    }),
+    CacheModule.register({
+      ttl: 0,
+      isGlobal: true,
     }),
     MovieModule,
     DirectorModule,
