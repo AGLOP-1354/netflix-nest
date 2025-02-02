@@ -24,6 +24,7 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieService } from './movie.service';
+import { Throttle } from 'src/common/decorator/throttle.decorator';
 
 @Controller('movie')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -44,6 +45,7 @@ export class MovieController {
 
   @Public()
   @Get(':id')
+  @Throttle({ count: 5, unit: 'minute' })
   getMovie(@Param('id', ParseIntPipe) id: number) {
     return this.movieService.findOne(id);
   }
